@@ -5,7 +5,7 @@ import static com.querydsl.core.types.PathMetadataFactory.*;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
 
@@ -21,6 +21,8 @@ public class QCard extends EntityPathBase<Card> {
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QCard card = new QCard("card");
+
+    public final StringPath cardCompanyName = createString("cardCompanyName");
 
     public final StringPath cardNo = createString("cardNo");
 
