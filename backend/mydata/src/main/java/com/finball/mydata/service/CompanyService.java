@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class CompanyService {
-
     private final CompanyRepository companyRepository;
 
     public GetBankListDto.Response getBanks() {

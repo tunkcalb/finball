@@ -1,4 +1,4 @@
-package com.finball.mydata.repository.account;
+package com.finball.mydata.repository;
 
 import com.finball.mydata.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;

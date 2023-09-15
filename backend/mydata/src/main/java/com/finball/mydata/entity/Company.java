@@ -8,15 +8,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Company {
 
     @Id
@@ -27,12 +28,6 @@ public class Company {
 
     private String cpLogo;
 
-    @Builder
-    public Company(Long id, String cpName, String cpLogo) {
-        this.id = id;
-        this.cpName = cpName;
-        this.cpLogo = cpLogo;
-    }
     private Long cpCode;
 
     @Enumerated(EnumType.STRING)
