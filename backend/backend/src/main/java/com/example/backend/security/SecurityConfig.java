@@ -84,14 +84,13 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // local 테스트 시
+        configuration.addAllowedOriginPattern("http://localhost:5173"); // local 테스트 시
         configuration.setAllowCredentials(true);
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("*");
         configuration.addExposedHeader("Access_Token");
         configuration.addExposedHeader("Refresh_Token");
-        configuration.addAllowedOriginPattern("*"); // 배포 전 모두 허용
         val source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
@@ -112,6 +111,9 @@ public class SecurityConfig {
 
         // HealthCheck
         skipPathList.add(new Path(HttpMethod.GET, "/actuator/health"));
+
+        // sms
+        skipPathList.add(new Path(HttpMethod.POST, "/user/sms"));
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPathList, "/**");
         JwtAuthFilter filter = new JwtAuthFilter(matcher, extractor);

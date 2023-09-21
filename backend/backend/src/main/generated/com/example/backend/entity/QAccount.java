@@ -5,7 +5,7 @@ import static com.querydsl.core.types.PathMetadataFactory.*;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
 
@@ -31,6 +31,8 @@ public class QAccount extends EntityPathBase<Account> {
     public final StringPath cpName = createString("cpName");
 
     public final DateTimePath<java.time.LocalDateTime> createdDt = createDateTime("createdDt", java.time.LocalDateTime.class);
+
+    public final BooleanPath isFavorite = createBoolean("isFavorite");
 
     public final QMember member;
 
