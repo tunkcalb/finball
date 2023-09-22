@@ -12,7 +12,9 @@ function Home() {
     <div className={styles.container}>
       <div className={styles.minicontainer}>
         <h2>우리 계좌</h2>
-        <div id="home-canvas" style={{ width: "300px", height: "300px" }}>
+
+        <div id="home-canvas" style={{ width: "300px", height: "150px" }}>
+          <div style={{position:"absolute",right:"45px",fontWeight:"bold",fontSize:"15px"}}>5,000,000원</div>
           <Pinball />
         </div>
       </div>
