@@ -23,7 +23,7 @@ public class GroupAccountMember {
     private Long id;
 
     @Column
-    private String toAccountNumber;
+    private String toAccountNo;
 
     @Column
     private Long value;
@@ -43,11 +43,16 @@ public class GroupAccountMember {
     @ManyToOne(fetch = FetchType.LAZY)
     private GroupAccount groupAccount;
 
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
     @Builder
-    public GroupAccountMember(String toAccountNumber, Long value, Long balance, String bankName, long skinId,
+    public GroupAccountMember(String toAccountNo, Long value, Long balance, String bankName,
+            long skinId,
             Member member,
             GroupAccount groupAccount) {
-        this.toAccountNumber = toAccountNumber;
+        this.toAccountNo = toAccountNo;
         this.value = value;
         this.balance = balance;
         this.bankName = bankName;
@@ -56,10 +61,15 @@ public class GroupAccountMember {
         this.groupAccount = groupAccount;
     }
 
-    public GroupMemberDto toGroupMemberDto(long hostId, long totalSum) {
+    public GroupMemberDto toGroupMemberDto(long hostId) {
         HostType type = HostType.NORMAL;
-        if(hostId == this.member.getId()) type = HostType.HOST;
-        if(totalSum == 0) totalSum = 1;
+        if (hostId == this.member.getId()) {
+            type = HostType.HOST;
+        }
+        long totalSum = this.value;
+        if (totalSum == 0) {
+            totalSum = 1;
+        }
         long percent = balance * 100 / totalSum;
         String profileImage = this.member.getProfileImg();
         String name = this.member.getName();

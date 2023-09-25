@@ -37,9 +37,10 @@ function Shop() {
 
   const getSkin = () => {
     axios
-      .get(`${BASE_HTTP_URL}/ball`, {
+      .get(`${BASE_HTTP_URL}/api/ball`, {
         headers: {
-          Authorization: token.accessToken,
+          // Authorization: token.accessToken,
+          Authorization: localStorage.getItem("accessToken"),
         },
       })
       .then((response) => {
@@ -55,9 +56,10 @@ function Shop() {
   const handleClose = () => setOpen(false);
 
   const buySkin = (skin) => {
+    console.log(skin.id);
     axios
       .post(
-        `${BASE_HTTP_URL}/ball/purchase`,
+        `${BASE_HTTP_URL}/api/ball/purchase`,
         {
           id: skin.id,
         },
@@ -69,6 +71,9 @@ function Shop() {
       )
       .then(() => {
         getSkin();
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
