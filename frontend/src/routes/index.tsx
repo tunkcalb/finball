@@ -21,6 +21,7 @@ import BankInfo from "../pages/Bank/BankInfo";
 import BankConnect from "../pages/Bank/BankConnect";
 import CardInfo from "../pages/Bank/CardInfo";
 import CardConnect from "../pages/Bank/CardConnect";
+import Agreement from "../pages/Bank/Agreement";
 
 import TestPage from "../pages/Test/TestPage";
 import NavPage from "../pages/NavPage/NavPage";
@@ -33,6 +34,12 @@ import Inventory from "../pages/Shop/Inventory";
 
 import Transfering from "../pages/Transfer/Transfering";
 import ReceivingMoney from "../pages/Transfer/Receive";
+import AccountList from "../pages/Transfer/AccountList";
+import AccountDetail from "../pages/Transfer/AccountDetail";
+import TransferAccount from "../pages/Transfer/TransferAccount";
+import TransferValue from "../pages/Transfer/TransferValue";
+
+import GroupAccount from "../pages/GroupAccount/GroupAccount";
 
 function Router() {
   return (
@@ -65,6 +72,14 @@ function Router() {
         <Route path="/bank/account" element={<BankConnect />} />
         <Route path="/company/card" element={<CardInfo />} />
         <Route path="/card" element={<CardConnect />} />
+        <Route path="/agreement" element={<Agreement />} />
+        {/* 계좌 이체 */}
+        <Route path="/accountList" element={<AccountList />} />
+        <Route path="/accountDetail" element={<AccountDetail />} />
+        <Route path="/transferAccount" element={<TransferAccount />} />
+        <Route path="/transferValue" element={<TransferValue />} />
+        {/* 모임통장 */}
+        <Route path="/groupaccount" element={<GroupAccount />} />
       </Routes>
     </>
   );

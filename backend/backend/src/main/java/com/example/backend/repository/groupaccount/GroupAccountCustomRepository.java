@@ -6,7 +6,6 @@ import static com.example.backend.entity.QGroupAccountMember.groupAccountMember;
 import static com.example.backend.entity.QGroupGameResult.groupGameResult;
 import static com.example.backend.entity.QMember.member;
 
-import com.example.backend.entity.Account;
 import com.example.backend.entity.GroupAccount;
 import com.example.backend.entity.GroupAccountHistory;
 import com.example.backend.entity.GroupAccountMember;
@@ -22,7 +21,7 @@ public class GroupAccountCustomRepository extends QuerydslRepositorySupport {
     private final JPAQueryFactory queryFactory;
 
     public GroupAccountCustomRepository(JPAQueryFactory queryFactory) {
-        super(Account.class);
+        super(GroupAccount.class);
         this.queryFactory = queryFactory;
     }
 
@@ -30,7 +29,7 @@ public class GroupAccountCustomRepository extends QuerydslRepositorySupport {
         GroupAccount result = queryFactory
                 .selectFrom(groupAccount)
                 .leftJoin(groupAccount.member, member).fetchJoin() // members를 함께 로드합니다.
-                .where(groupAccount.accountNumber.eq(groupAccountId))
+                .where(groupAccount.accountNo.eq(groupAccountId))
                 .fetch().get(0);
         return result;
     }
@@ -40,7 +39,7 @@ public class GroupAccountCustomRepository extends QuerydslRepositorySupport {
                 .selectFrom(groupAccountMember)
                 .join(groupAccountMember.groupAccount, groupAccount)
                 .join(groupAccountMember.member, member).fetchJoin()
-                .where(groupAccount.accountNumber.eq(groupAccountId))
+                .where(groupAccount.accountNo.eq(groupAccountId))
                 .fetch();
         return result;
     }
@@ -53,7 +52,7 @@ public class GroupAccountCustomRepository extends QuerydslRepositorySupport {
                 .join(groupAccountHistory.games, groupGameResult).fetchJoin()
                 .join(groupGameResult.groupAccountMember, groupAccountMember)
                 .join(groupAccountMember.member, member)
-                .where(groupAccountHistory.groupAccount.accountNumber.eq(groupAccountId))
+                .where(groupAccountHistory.groupAccount.accountNo.eq(groupAccountId))
                 .fetch();
         return result;
     }

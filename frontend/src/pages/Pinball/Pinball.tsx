@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Engine, Render, World, Bodies } from "matter-js";
-import "./Pinball.module.css";
-import test from "../../assets/defalutball.png"
+import styles from "./Pinball.module.css";
+import test from "../../assets/defalutball.png";
+import { StyleRounded } from "@mui/icons-material";
 
-function Pinball() {
+function Pinball(value) {
   const [engine, setEngine] = useState(null);
   const [render, setRender] = useState(null);
-
+  const [balls, setBalls] = useState([]);
+  const [ballcnt, setBallcnt] = useState(40);
+  console.log(value.value.parent)
   // 부모 컨테이너의 크기를 가져오는 함수
   const getParentContainerSize = () => {
-    const parentContainer = document.getElementById("home-canvas"); // 부모 컨테이너의 ID로 가져옴
+    const parentContainer = document.getElementById(value.value.parent); // 부모 컨테이너의 ID로 가져옴
     return {
       width: parentContainer.clientWidth,
       height: parentContainer.clientHeight,
@@ -25,11 +28,11 @@ function Pinball() {
 
     // 중력 설정
     newEngine.world.gravity.x = 0;
-    newEngine.world.gravity.y = 0.1;
+    newEngine.world.gravity.y = 0.4;
 
     // Create a renderer
     const newRender = Render.create({
-      element: document.getElementById("home-canvas"), // 렌더러를 부모 컨테이너에 적용
+      element: document.getElementById(value.value.parent), // 렌더러를 부모 컨테이너에 적용
       engine: newEngine,
       options: {
         width: parentSize.width, // 부모 컨테이너의 가로 크기로 설정
@@ -49,7 +52,8 @@ function Pinball() {
       {
         isStatic: true,
         render: {
-          fillStyle: "#4C4499",
+          // fillStyle: "#4C4499",
+          fillStyle: "transparent",
           strokeStyle: "transparent",
         },
       }
@@ -62,8 +66,9 @@ function Pinball() {
       {
         isStatic: true,
         render: {
-          fillStyle: "#4C4499", // 노란색으로 색칠
-          strokeStyle: "transparent", // 테두리를 투명하게
+          // fillStyle: "#4C4499",
+          fillStyle: "transparent",
+          strokeStyle: "transparent",
         },
       }
     );
@@ -75,8 +80,9 @@ function Pinball() {
       {
         isStatic: true,
         render: {
-          fillStyle: "#4C4499", // 노란색으로 색칠
-          strokeStyle: "transparent", // 테두리를 투명하게
+          // fillStyle: "#4C4499",
+          fillStyle: "transparent",
+          strokeStyle: "transparent",
         },
       }
     );
@@ -88,21 +94,21 @@ function Pinball() {
       {
         isStatic: true,
         render: {
-          fillStyle: "#4C4499", // 노란색으로 색칠
-          strokeStyle: "transparent", // 테두리를 투명하게
+          // fillStyle: "#4C4499",
+          fillStyle: "transparent",
+          strokeStyle: "transparent",
         },
       }
     );
 
     // Create balls array
-    const balls = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < ballcnt; i++) {
       const ball = Bodies.circle(
         Math.random() * parentSize.width,
         Math.random() * parentSize.height,
         Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23,
         {
-          restitution: 0.1,
+          restitution: 0.05,
           friction: 0.001,
           density: 10,
           isStatic: false,
@@ -113,9 +119,9 @@ function Pinball() {
             sprite: {
               //''히먄 스프라이트 적용x
               texture: test,
-              xScale: 0.5,
-              yScale: 0.5
-          }
+              xScale: Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23/30,
+              yScale: Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23/30,
+            },
           },
         }
       );
@@ -132,10 +138,13 @@ function Pinball() {
       const sortedBalls = [...balls].sort(
         (a, b) => b.position.y - a.position.y
       );
-      let ball = [];
+      setBalls(sortedBalls);
+      const ball = [];
       for (let i = 1; i < 11; i++) {
-        ball.push(sortedBalls[sortedBalls.length - i]);
+        ball.push(balls[balls.length - 1]);
+        balls.splice(balls.length - 1, 1);
       }
+      setBallcnt(sortedBalls.length);
       // 페이드 아웃 효과 추가
       fadeOutBodies(ball);
     });
@@ -150,35 +159,37 @@ function Pinball() {
             }
           }
         });
-      }, 50); // 100ms마다 투명도 조절
+      }, 50); // 50ms마다 투명도 조절
     };
     newRender.canvas.addEventListener(clickEvent, () => {
-      for (let i = 0; i < 5; i++) {
-        const ball = Bodies.circle(
-          Math.random() * parentSize.width,
-          Math.random() * parentSize.height,
-          Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23,
-          {
-            restitution: 0.1,
-            friction: 0.001,
-            density: 10,
-            isStatic: false,
-            render: {
-              fillStyle: "#05CD01",
-              strokeStyle: "white",
-              lineWidth: 3,
-              sprite: {
-                //''히먄 스프라이트 적용x
-                texture: test,
-                xScale: 0.5,
-                yScale: 0.5
+      setTimeout(() => {
+        for (let i = 0; i < 5; i++) {
+          const ball = Bodies.circle(
+            Math.random() * parentSize.width,
+            parentSize.height / 10,
+            Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23,
+            {
+              restitution: 0.1,
+              friction: 0.001,
+              density: 10,
+              isStatic: false,
+              render: {
+                fillStyle: "#05CD01",
+                strokeStyle: "white",
+                lineWidth: 3,
+                sprite: {
+                  //''하면 스프라이트 적용x
+                  texture: test,
+                  xScale: Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23/30,
+                  yScale: Math.sqrt(parentSize.width ** 2 + parentSize.height ** 2) / 23/30,
+                },
+              },
             }
-            },
-          }
-        );
-        balls.push(ball);
-        World.add(newEngine.world, ball);
-      }
+          );
+          balls.push(ball);
+          World.add(newEngine.world, ball);
+        }
+      }, 1000);
     });
     const Boundary = [ground, wall1, wall2, wall3];
     World.add(newEngine.world, [...Boundary, ...balls]);
@@ -201,7 +212,16 @@ function Pinball() {
     };
   }, []);
 
-  return <div id="pinball-canvas"></div>;
+  return (
+    <div id="pinball-canvas">
+      {value.value.cost?
+      <div style={{ display: "flex",justifyContent: "flex-end",transform:"translate(0,100%)"}}>
+      <div className={styles.finball}>
+        {value.value.cost}원
+      </div>
+      </div>:<></>}
+    </div>
+  );
 }
 
 export default Pinball;

@@ -4,7 +4,6 @@ import com.example.backend.dto.RestDto;
 import com.example.backend.dto.mydata.history.AccountHistoryDto;
 import com.example.backend.dto.mydata.history.AccountHistoryListDto;
 import com.example.backend.dto.mydata.history.AccountHistoryListDto.Request;
-import com.example.backend.dto.mydata.history.AccountHistoryListDto.Response;
 import com.example.backend.entity.FinBallAccount;
 import com.example.backend.entity.FinBallHistory;
 import com.example.backend.entity.Member;
@@ -65,13 +64,14 @@ public class HistoryService {
             throws JsonProcessingException {
         String token = redisUtil.getMyDataToken(memberId);
 
-        System.out.println(request);
         ResponseEntity<String> response = restTemplateUtil.callMyData(token,
-                request, "/myData/account/history",
+                request, "/my-data/account/history",
                 HttpMethod.POST);
 
         RestDto<AccountHistoryDto> restDto = new RestDto<>(AccountHistoryDto.class,
                 response);
+
+        System.out.println(restDto);
 
         return (List<AccountHistoryDto>) restTemplateUtil.parseListBody(
                 restDto, "tradeHistoryDtoList");
