@@ -43,6 +43,9 @@ import TransferAccount from "../pages/Transfer/TransferAccount";
 import TransferValue from "../pages/Transfer/TransferValue";
 
 import GroupAccount from "../pages/GroupAccount/GroupAccount";
+import CreateGroupAccount from "../pages/GroupAccount/CreateGroupAccount";
+// 컴포넌트 테스트용
+import InviteMember from "../components/GroupAccount/InviteMember"
 
 import MyDataAuth from "../pages/Auth/MyDataAuth"
 import CreateFinBallAccount from "../pages/Pinball/CreateFinBallAccount"
@@ -99,8 +102,12 @@ function Router() {
           <Route path="/accountDetail" element={<AccountDetail />} />
           <Route path="/transferAccount" element={<TransferAccount />} />
           <Route path="/transferValue" element={<TransferValue />} />
-          {/* 모임통장 */}
-          <Route path="/groupaccount" element={<GroupAccount />} />
+          {/* 모임통장 -> 동적 라우팅 적용 */}
+          <Route path="/groupaccount/:no" element={<GroupAccount />} />
+          {/* 모임통장 생성 페이지 */}
+          <Route path="/create/group-account" element={<CreateGroupAccount />} />
+          {/* 모달 테스트 (사용자 초대 모달) */}
+          <Route path="/invite/group-account" element={<InviteMember />} />
         </Route>
       </Routes>
     </>
