@@ -58,7 +58,15 @@ public class Member {
     @Column
     private UserType type = UserType.USER;
 
+    public void setPoint(int value) {
+        this.point = value;
+    }
+
     public void registerEasyPassword(String easyPassword) {
         this.easyPassword = easyPassword;
+    }
+
+    public void updatePoint(int point) {
+        this.point += point;
     }
 }

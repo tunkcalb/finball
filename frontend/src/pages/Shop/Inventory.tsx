@@ -9,37 +9,53 @@ import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { useSelector } from "react-redux";
+import styles from "./inventory.module.css";
 
 const BASE_HTTP_URL = "https://j9E106.p.ssafy.io";
 
 function Inventory() {
   const [inventoryList, setInventoryList] = useState<any>(null);
   const [isDetail, setIsDetail] = useState<boolean>(false);
+  const [point, setPoint] = useState<number>(0);
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
+  const auth = useSelector((state) => state.auth);
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = inventoryList && inventoryList.length;
 
   useEffect(() => {
+    getPoint();
     getInventory();
-  }, [token]);
+  }, []);
+
+  const getPoint = () => {
+    axios
+      .get(`${BASE_HTTP_URL}/api/user/point`, {
+        headers: {
+          Authorization: auth.accessToken,
+        },
+      })
+      .then((response) => {
+        setPoint(response.data.data.point);
+      });
+  };
 
   const getInventory = () => {
     axios
       .get(`${BASE_HTTP_URL}/api/ball/inventory`, {
         headers: {
-          // Authorization: token.accessToken,
-          Authorization: localStorage.getItem("accessToken"),
+          Authorization: auth.accessToken,
         },
       })
       .then((response) => {
+        console.log(response.data.data.inventoryDtoList);
         setInventoryList(response.data.data.inventoryDtoList);
       });
   };
 
   const selectSkin = (skinId: any) => {
+    console.log(skinId);
     axios
       .post(
         `${BASE_HTTP_URL}/api/ball/select`,
@@ -48,8 +64,7 @@ function Inventory() {
         },
         {
           headers: {
-            // Authorization: token.accessToken,
-            Authorization: localStorage.getItem("accessToken"),
+            Authorization: auth.accessToken,
           },
         }
       )
@@ -82,25 +97,30 @@ function Inventory() {
   return (
     <div>
       <h1>Inventory</h1>
+      <p>{point}</p>
       {isDetail ? (
         <div>
           <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
             <img
+              className={styles.skinImg}
               src={inventoryList[activeStep].image}
-              width={50}
               onClick={viewDetail}
             />
-            <p>{inventoryList[activeStep].name}</p>
+            <p className={styles.skinName}>{inventoryList[activeStep].name}</p>
             <div>
-              <button onClick={() => preview(inventoryList[activeStep].id)}>
+              <button
+                className={styles.preview}
+                onClick={() => preview(inventoryList[activeStep].id)}
+              >
                 내 계좌에서 미리보기
               </button>
             </div>
             <div>
               {inventoryList[activeStep].selected ? (
-                <button>착용 중</button>
+                <button className={styles.selectedButton}>착용 중</button>
               ) : (
                 <button
+                  className={styles.unSelectedButton}
                   onClick={() => selectSkin(inventoryList[activeStep].id)}
                 >
                   착용하기
@@ -142,11 +162,13 @@ function Inventory() {
               }
             />
           </Box>
-          <button onClick={viewInventory}>목록가기</button>
+          <button className={styles.preview} onClick={viewInventory}>
+            목록가기
+          </button>
         </div>
       ) : (
         inventoryList && (
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, marginBottom: 3 }}>
             <Grid
               container
               spacing={{ xs: 1, md: 2 }}
@@ -155,15 +177,18 @@ function Inventory() {
               {[...inventoryList].map((inventory, index) => (
                 <Grid xs={2} sm={4} md={4} key={index}>
                   <img
+                    className={styles.skinImg}
                     src={inventory.image}
-                    width={50}
                     onClick={() => viewDetail(index)}
                   />
-                  <p>{inventory.name}</p>
+                  <p className={styles.skinName}>{inventory.name}</p>
                   {inventory.selected ? (
-                    <button>착용 중</button>
+                    <button className={styles.selectedButton}>착용 중</button>
                   ) : (
-                    <button onClick={() => selectSkin(inventory.id)}>
+                    <button
+                      className={styles.unSelectedButton}
+                      onClick={() => selectSkin(inventory.id)}
+                    >
                       착용하기
                     </button>
                   )}
@@ -174,7 +199,9 @@ function Inventory() {
         )
       )}
       {!isDetail && (
-        <button onClick={() => navigate("/shop")}>상점 가기</button>
+        <button className={styles.preview} onClick={() => navigate("/shop")}>
+          상점 가기
+        </button>
       )}
     </div>
   );
