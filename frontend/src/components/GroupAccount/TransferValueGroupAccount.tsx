@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "./TransferValue.module.css";
+import styles from "./TransferValueGroupAccount.module.css";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -8,76 +8,19 @@ import Box from "@mui/material/Box";
 
 const BASE_HTTP_URL = "https://j9E106.p.ssafy.io";
 
-const makeAccount = () => {
-  const opposite = useSelector((state) => state.opposite);
+function TransferValueGroupAccount() {
   const auth = useSelector((state) => state.auth);
-  console.log(opposite);
-  const account = {
-    account: {
-      no: opposite.opposite.accountNo,
-      name: auth.name,
-      balance: 0,
-    },
-    company: opposite.opposite.company,
-  };
-
-  return account;
-};
-
-let makeOpposite = () => {
   const account = useSelector((state) => state.account);
-  const auth = useSelector((state) => state.auth);
-
-  console.log(account);
-
-  const opposite = {
-    opposite: {
-      accountNo: account.account.no,
-      company: account.company,
-      name: account.account.name,
-    },
-  };
-
-  console.log(opposite);
-
-  return opposite;
-};
-
-function TransferValue() {
-  const location = useLocation();
-  const fill = location.state?.fill;
-
-  const auth = useSelector((state) => state.auth);
-  let account = fill ? makeAccount() : useSelector((state) => state.account);
-  const opposite = fill
-    ? makeOpposite()
-    : useSelector((state) => state.opposite);
+  const opposite = useSelector((state) => state.opposite);
   const [value, setValue] = useState<string>("");
   const [showNumberPad, setShowNumberPad] = useState(false);
-  const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (fill) {
-      console.log(opposite);
-      getBalance(account.account.no);
-    }
+    console.log(account);
+    console.log(opposite);
+    console.log(auth);
   }, []);
-
-  const getBalance = (no) => {
-    axios
-      .get(`${BASE_HTTP_URL}/api/user/account/balance/${no}`, {
-        headers: {
-          Authorization: auth.accessToken,
-        },
-      })
-      .then((response) => {
-        setBalance(response.data.data.balance);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   const clickButton = (number) => {
     if (number === "<-") {
@@ -96,45 +39,44 @@ function TransferValue() {
   };
 
   const doTransfer = () => {
-    if (value > account.account.balance) {
-      alert(`최대 ${account.account.balance}원을 이체할 수 있습니다.`);
-    } else {
-      axios
-        .post(
-          `${BASE_HTTP_URL}/api/user/transfer`,
-          {
-            minusBank: {
-              accountNo: account.account.no,
-              companyId: account.company.code,
-              userName: auth.name,
-              balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
-            },
-            plusBank: {
-              accountNo: opposite.opposite.accountNo,
-              companyId: opposite.opposite.company.code,
-              userName: opposite.opposite.name,
-              balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
-            },
-            value: value,
+    console.log(account);
+    console.log(opposite);
+    console.log(auth);
+    axios
+      .post(
+        `${BASE_HTTP_URL}/api/user/transfer`,
+        {
+          minusBank: {
+            accountNo: account.account.no,
+            companyId: account.company.code,
+            userName: auth.name,
+            balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
           },
-          {
-            headers: {
-              Authorization: auth.accessToken,
-            },
-          }
-        )
-        .then(() => {
-          navigate("/securitykeypad", {
-            state: {
-              money: parseInt(value),
-              userName: opposite.opposite.name,
-            },
-          });
-        })
-        .catch((error) => {
-          console.log(error);
+          plusBank: {
+            accountNo: opposite.opposite.accountNo,
+            companyId: opposite.opposite.company.code,
+            userName: opposite.opposite.name,
+            balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
+          },
+          value: value,
+        },
+        {
+          headers: {
+            Authorization: auth.accessToken,
+          },
+        }
+      )
+      .then(() => {
+        navigate("/transferingGroupAccount", {
+          state: {
+            money: parseInt(value),
+            userName: opposite.opposite.name,
+          },
         });
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -154,9 +96,7 @@ function TransferValue() {
   return (
     <div className={styles.container}>
       <p className={styles.bigText}>내 {account.account.name}에서</p>
-      <p className={styles.smallText}>
-        잔액 {fill ? balance : account.account.balance}원
-      </p>
+      <p className={styles.smallText}>잔액 {account.account.balance}원</p>
 
       <p className={styles.bigText}>{opposite.opposite.name}에게</p>
       <p className={styles.smallText}>
@@ -219,4 +159,4 @@ function TransferValue() {
   );
 }
 
-export default TransferValue;
+export default TransferValueGroupAccount;

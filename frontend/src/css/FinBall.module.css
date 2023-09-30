@@ -1,10 +1,18 @@
-@import "../../pages/Test/main.module.scss";
+.button {
+  background-color: #3c78ff;
+  color: white;
+}
+
+.subbutton {
+  background-color: #6d8bce;
+  color: white;
+}
 
 .container {
   overflow: auto;
+  white-space: nowrap;
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
+  justify-content: center;
 }
 
 .container::-webkit-scrollbar {
@@ -17,23 +25,15 @@
 }
 
 .cardBox {
-  display: flex;
-  flex-direction: column;
-  width: 100px;
-  justify-content: center;
-  align-items: center;
+  margin-right: -20px;
+  margin-left: -20px;
 }
 
-
 .text {
-  flex-wrap: wrap;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  overflow-wrap: break-word;
-  font-weight: 600;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .noncontainer {
@@ -46,7 +46,7 @@
 
 .noncontainer button {
   width: 100%;
-  background-color: $maincolor;
+  background-color: #3c78ff;
   color: aliceblue;
 }
 
