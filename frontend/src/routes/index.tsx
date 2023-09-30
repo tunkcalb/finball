@@ -18,7 +18,7 @@ import CertificationNaver from "../pages/Auth/CertificationNaver";
 import Pinball from "../pages/Pinball/Pinball";
 import Game from "../pages/Pinball/Game";
 import Game2 from "../pages/Pinball/Game2";
-import Card from "../pages/Pinball/Card";
+import Card from "../pages/Card/Card";
 import AccountBook from "../pages/Pinball/AccountBook";
 
 import BankInfo from "../pages/Bank/BankInfo";
@@ -54,6 +54,11 @@ import MyDataAuth from "../pages/Auth/MyDataAuth";
 import CreateFinBallAccount from "../pages/Pinball/CreateFinBallAccount";
 import CreateFinBallAccountAuth from "../pages/Auth/CreateFinBallAccountAuth";
 
+// 모임통장 계좌이체
+import TransferGroupAccount from "../components/GroupAccount/TransferGroupACcount.tsx";
+import TransferValueGroupAccount from "../components/GroupAccount/TransferValueGroupAccount.tsx";
+import TransferingGroupAccount from "../components/GroupAccount/TransferingGroupAccount.tsx";
+
 function Router() {
   return (
     <>
@@ -78,7 +83,7 @@ function Router() {
         />
 
         <Route path="/pinball" element={<Pinball />} />
-        {/* <Route path="/card" element={<Card />} /> */}
+        <Route path="/cardView" element={<Card />} />
         <Route path="/game" element={<Game />} />
         <Route path="/game2" element={<Game2 />} />
         <Route path="/signupconfrim" element={<SignUpConfrim />} />
@@ -122,12 +127,25 @@ function Router() {
           />
           {/* 모달 테스트 (사용자 초대 모달) */}
           <Route path="/invite/group-account" element={<InviteMember />} />
+          {/* 모임 통장 계좌이체 */}
+          <Route
+            path="/transferGroupAccount"
+            element={<TransferGroupAccount />}
+          />
+          <Route
+            path="/transferValueGroupAccount"
+            element={<TransferValueGroupAccount />}
+          />
           {/* 모임 통장 거래 내역 페이지 */}
           <Route
             path="/group-account/history/:no"
             element={<GroupAccountHistory />}
           />
         </Route>
+        <Route
+          path="/transferingGroupAccount"
+          element={<TransferingGroupAccount />}
+        />
       </Routes>
     </>
   );
