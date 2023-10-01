@@ -177,16 +177,37 @@ public class FinBallService {
         if (tradeHistory.getDealType() == DealType.입금) {
             throw new CustomException(ErrorCode.NOT_WITHDRAW_ERROR);
         }
-
-        setCategory(tradeHistory, request);
+        if (request.getCategoryId() == -1) {
+            removeCategoryFromHistory(request.getTradeHistoryId());
+        } else {
+            setCategory(tradeHistory, request);
+        }
         finBallHistoryRepository.save(tradeHistory);
 
         return readFinBallHistoryList(member);
     }
 
+    private void removeCategoryFromHistory(Long tradeHistoryId) {
+        FinBallHistory finBallHistory = finBallHistoryRepository.findById(tradeHistoryId).orElseThrow(
+                () -> new CustomException(ErrorCode.DATA_NOT_FOUND)
+        );
+
+        if(finBallHistory.getCategory() != null){
+            Long val = finBallHistory.getValue();
+            Category category = categoryRepository.findById(finBallHistory.getCategory().getId()).orElseThrow(
+                    () -> new CustomException(ErrorCode.DATA_NOT_FOUND)
+            );
+
+            category.minusUsedValue(val); //누적 금액에서 마이너스
+            categoryRepository.save(category);
+        }
+
+        finBallHistory.setCategory(null);
+    }
+
     public void setCategory(FinBallHistory tradeHistory, SetCategoryData.Request request) {
 
-        Category requestCategory = categoryRepository.findByName(request.getCategoryName())
+        Category requestCategory = categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(
                         () -> new CustomException(ErrorCode.DATA_NOT_FOUND)
                 );
@@ -202,7 +223,7 @@ public class FinBallService {
             requestCategory.plusUsedValue(tradeHistory.getValue());
         }
 
-        tradeHistory.setHistory(requestCategory);
+        tradeHistory.setCategory(requestCategory);
     }
 
     public UsageAndMoneySourceDto.Response readUsageAndMoneySource() {
