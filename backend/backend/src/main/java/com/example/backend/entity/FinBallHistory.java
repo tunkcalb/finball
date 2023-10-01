@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.example.backend.dto.finball.CategoryDto;
 import com.example.backend.dto.finball.CompanyDto;
 import com.example.backend.dto.finball.ReadFinBallTradeHistoryDto;
 import com.example.backend.dto.finball.OppositeDto;
@@ -83,12 +84,17 @@ public class FinBallHistory {
                         .build())
                 .build();
         if (this.category != null) {
-            readFinBallTradeHistoryDto.setCategoryName(this.category.getName());
+            readFinBallTradeHistoryDto.setCategory(
+                    CategoryDto.builder()
+                            .id(this.category.getId())
+                            .name(this.category.getName())
+                            .build()
+            );
         }
         return readFinBallTradeHistoryDto;
     }
 
-    public void setHistory(Category requestCategory) {
+    public void setCategory(Category requestCategory) {
         this.category = requestCategory;
     }
 }
