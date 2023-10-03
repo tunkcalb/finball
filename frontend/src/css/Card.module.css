@@ -4,15 +4,15 @@
 }
 
 .subbutton {
-  background-color: #6d8bce;
+  background-color: #305dc5;
   color: white;
 }
 
 .container {
   overflow: auto;
-  white-space: nowrap;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  align-items: baseline;
 }
 
 .container::-webkit-scrollbar {
@@ -25,15 +25,22 @@
 }
 
 .cardBox {
-  margin-right: -20px;
-  margin-left: -20px;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+  justify-content: center;
+  align-items: center;
 }
 
 .text {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  font-weight: bold;
-  font-size: 12px;
+  flex-wrap: wrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  font-weight: 600;
 }
 
 .noncontainer {

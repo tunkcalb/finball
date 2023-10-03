@@ -64,6 +64,12 @@ function TransferValue() {
     }
   }, []);
 
+  useEffect(() => {
+    if (value === "0" || value === "00") {
+      setValue("");
+    }
+  }, [value]);
+
   const getBalance = (no) => {
     axios
       .get(`${BASE_HTTP_URL}/api/user/account/balance/${no}`, {
@@ -92,45 +98,53 @@ function TransferValue() {
   };
 
   const transferAll = () => {
-    setValue(value + account.account.balance);
+    setValue(value + (fill ? balance : account.account.balance));
   };
 
   const doTransfer = () => {
-    axios
-      .post(
-        `${BASE_HTTP_URL}/api/user/transfer`,
-        {
-          minusBank: {
-            accountNo: account.account.no,
-            companyId: account.company.code,
-            userName: auth.name,
-            balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
+    if (value > (fill ? balance : account.account.balance)) {
+      alert(
+        `최대 ${
+          fill ? balance : account.account.balance
+        }원을 이체할 수 있습니다.`
+      );
+    } else {
+      axios
+        .post(
+          `${BASE_HTTP_URL}/api/user/transfer`,
+          {
+            minusBank: {
+              accountNo: account.account.no,
+              companyId: account.company.code,
+              userName: auth.name,
+              balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
+            },
+            plusBank: {
+              accountNo: opposite.opposite.accountNo,
+              companyId: opposite.opposite.company.code,
+              userName: opposite.opposite.name,
+              balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
+            },
+            value: value,
           },
-          plusBank: {
-            accountNo: opposite.opposite.accountNo,
-            companyId: opposite.opposite.company.code,
-            userName: opposite.opposite.name,
-            balance: null, //  finball 계좌는 서버에서 balance 넣어줘야됨
-          },
-          value: value,
-        },
-        {
-          headers: {
-            Authorization: auth.accessToken,
-          },
-        }
-      )
-      .then(() => {
-        navigate("/securitykeypad", {
-          state: {
-            money: parseInt(value),
-            userName: opposite.opposite.name,
-          },
+          {
+            headers: {
+              Authorization: auth.accessToken,
+            },
+          }
+        )
+        .then(() => {
+          navigate("/securitykeypad", {
+            state: {
+              money: parseInt(value),
+              userName: opposite.opposite.name,
+            },
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
   };
 
   useEffect(() => {
@@ -169,7 +183,7 @@ function TransferValue() {
 
       {!value && !showNumberPad && (
         <button className={styles.totalBalanceButton} onClick={transferAll}>
-          잔액{account.account.balance}원 입력
+          잔액 {fill ? balance : account.account.balance}원 입력
         </button>
       )}
 

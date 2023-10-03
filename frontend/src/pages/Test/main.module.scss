@@ -1,5 +1,7 @@
 $maincolor: #3c78ff;
-$subcolor: desaturate($maincolor, 50%);
+// $subcolor: desaturate($maincolor, 50%);
+$subcolor: #305dc5;
+$bordercolor: #a5c0ff;
 $greycolor: grayscale($maincolor);
 
 .button {
@@ -10,4 +12,9 @@ $greycolor: grayscale($maincolor);
 .subbutton {
   background-color: $subcolor;
   color: white;
+}
+
+.bluebutton {
+  background-color: rgb(230, 235, 255);
+  color: $maincolor;
 }

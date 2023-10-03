@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FinBallTradeHistoryDto {
+public class ReadFinBallTradeHistoryDto {
 
     private Long id;
     private Long value;
@@ -17,5 +17,5 @@ public class FinBallTradeHistoryDto {
     private DealType type;
     private Long balance;
     private OppositeDto opposite;
-    private String categoryName;
+    private CategoryDto category;
 }

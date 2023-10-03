@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import Pinball from "../Pinball/Pinball";
+import AccountFinball from "../Pinball/AccountFinball";
+import PinballJeongHui from "../Pinball/PinballJeongHui";
 import {
   CircularProgressbar,
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import safe from "../../assets/safe.png";
+import SafeMoney from "./safeMoney";
 import cash from "../../assets/cash.png";
 import styles from "./AccountBook.module.css";
 import axios from "axios";
@@ -17,8 +18,10 @@ import { Carousel } from "react-responsive-carousel";
 import { useSelector, useDispatch } from "react-redux";
 import AccountDetailComponent from "../Transfer/AccountDetailComponent";
 import { setAccount } from "../../store/slices/accountSlice";
+import { RootState } from "../../store/store";
 
 const BASE_HTTP_URL = "https://j9E106.p.ssafy.io";
+//const BASE_HTTP_URL = "http://localhost:8080";
 
 function AccountBook() {
   const [state, setState] = useState<any>({});
@@ -38,6 +41,7 @@ function AccountBook() {
   const color = ["red", "green", "yellow", "blue"];
   const dispatch = useDispatch();
   const now = new Date();
+  const accountbook = useSelector((state: RootState) => state.accountbook);
 
   // const response=localStorage.getItem("persist:root")
   // const jsonObject: { auth: string } = JSON.parse(response);
@@ -117,6 +121,10 @@ function AccountBook() {
       })
     );
   }, []);
+
+  useEffect(() => {
+    findAccountBook();
+  }, [accountbook]);
   const getHistory = () => {
     axios({
       method: "get",
@@ -152,7 +160,7 @@ function AccountBook() {
   const createAccountBook = async () => {
     await axios({
       method: "post",
-      url: `https://j9e106.p.ssafy.io/api/financial-book`,
+      url: `${BASE_HTTP_URL}/api/financial-book`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -168,7 +176,9 @@ function AccountBook() {
     })
       .then((res) => {
         setState(res.data.data);
-        window.location.reload();
+        //이게 false여야 가계부 생성 => 삭제 버튼 만들어짐
+        setisAccountBook(false);
+        getHistory();
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -178,7 +188,7 @@ function AccountBook() {
   const findAccountBook = async () => {
     await axios({
       method: "get",
-      url: `https://j9e106.p.ssafy.io/api/financial-book`,
+      url: `${BASE_HTTP_URL}/api/financial-book`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -195,7 +205,7 @@ function AccountBook() {
   const createCategory = async () => {
     await axios({
       method: "post",
-      url: `https://j9e106.p.ssafy.io/api/financial-book/category`,
+      url: `${BASE_HTTP_URL}/api/financial-book/category`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -209,7 +219,9 @@ function AccountBook() {
       },
     })
       .then((res) => {
+        // alert("1")
         setState(res.data.data);
+        // alert("2")
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -218,7 +230,7 @@ function AccountBook() {
   const deleteCategory = async () => {
     await axios({
       method: "delete",
-      url: `https://j9e106.p.ssafy.io/api/financial-book/category`,
+      url: `${BASE_HTTP_URL}/api/financial-book/category`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -240,7 +252,7 @@ function AccountBook() {
   const updateCategory = async () => {
     await axios({
       method: "put",
-      url: `https://j9e106.p.ssafy.io/api/financial-book/category`,
+      url: `${BASE_HTTP_URL}/api/financial-book/category`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -251,6 +263,7 @@ function AccountBook() {
       },
     })
       .then((res) => {
+        // alert("3")
         console.log(res.data.data);
         setState(res.data.data);
       })
@@ -275,7 +288,7 @@ function AccountBook() {
   const deleteAccountBook = async () => {
     await axios({
       method: "delete",
-      url: `https://j9e106.p.ssafy.io/api/financial-book`,
+      url: `${BASE_HTTP_URL}/api/financial-book`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -283,7 +296,8 @@ function AccountBook() {
       .then((res) => {
         console.log(res);
         setisAccountBook(false);
-        window.location.reload();
+        //window.location.reload();
+        getHistory();
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -292,7 +306,7 @@ function AccountBook() {
   const selectCategory = async () => {
     await axios({
       method: "post",
-      url: `https://j9e106.p.ssafy.io/api/fin-ball/category`,
+      url: `${BASE_HTTP_URL}/api/fin-ball/category`,
       headers: {
         Authorization: auth.accessToken,
       },
@@ -521,10 +535,12 @@ function AccountBook() {
             onClick={() => handleButtonClick("btn3")}
           ></button>
         </div>
-        <div>
-          <button onClick={openCategoryModal}>category+</button>
-          <button onClick={openModal}>category-</button>
-        </div>
+        {selectedBtn === "btn3" && state.categoryList.length > 0 && (
+          <div>
+            <button onClick={openCategoryModal}>가계부 항목 추가</button>
+            {/* <button onClick={openModal}>category-</button> */}
+          </div>
+        )}
       </div>
       <Carousel
         selectedItem={
@@ -553,9 +569,9 @@ function AccountBook() {
                   height: "360px",
                 }}
               >
-                <Pinball value={{ parent: "canvas1" }} />
+                <AccountFinball value={{ parent: "canvas1" }} />
                 <div style={{ position: "absolute", top: "0", right: "0" }}>
-                  <img src={safe} style={{ width: "50px", height: "50px" }} />
+                  <SafeMoney balance={finBallAccount.account.balance} />
                 </div>
               </div>
             </div>
@@ -593,6 +609,7 @@ function AccountBook() {
                     transform: "translate(0,100%)",
                   }}
                 >
+                  {/* ==== */}
                   {Array.isArray(state.categoryList) &&
                     state.categoryList.map((v, i) => (
                       <div
@@ -622,7 +639,7 @@ function AccountBook() {
                       zIndex: -1,
                     }}
                   >
-                    <Pinball value={{ parent: "canvas3" }} />
+                    <AccountFinball value={{ parent: "canvas3" }} />
                   </div>
                 </div>
               </div>

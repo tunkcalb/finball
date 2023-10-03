@@ -2,9 +2,12 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import styles from "./GroupAccount.module.css";
 import Pinball from "../Pinball/Pinball";
+import GroupFinball from "../Pinball/GroupFinball";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import GroupAccountModal from "../../components/GroupAccount/GroupAccountModal";
+import { setAccount } from "../../store/slices/accountSlice";
+import { useParams } from "react-router-dom";
 
 function formatMoney(amount) {
   return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -26,11 +29,17 @@ const GroupAccount = () => {
     setIsModalOpen(false);
   };
 
+  const dispatch = useDispatch();
+
+  // 계좌번호
+  const accountNo = useParams().no;
+  const companyCode = 106;
+
   useEffect(() => {
     axios({
       method: "GET",
-      url: "https://j9e106.p.ssafy.io/api/group/account/31942-202934-614",
-      //url: "http://localhost:8080/api/group/account/31942-202934-614",
+      url: "https://j9e106.p.ssafy.io/api/group/account/" + accountNo,
+      // url: "http://localhost:8080/api/group/account" + accountNo,
       headers: {
         Authorization: accessToken,
       },
@@ -40,6 +49,15 @@ const GroupAccount = () => {
       setValue({ cost: balance, parent: "home-canvas" });
       // setData(res.data.data);
       console.log(res.data.data.name);
+      const state = {
+        account: {
+          no: accountNo,
+          name: res.data.data.name,
+          balance: res.data.data.balance,
+        },
+        company: { code: companyCode },
+      };
+      dispatch(setAccount(state));
     });
   }, []);
 
@@ -84,7 +102,7 @@ const GroupAccount = () => {
             <GroupAccountModal onClose={closeModal} data={data} />
           )}
           <div id="home-canvas" className={styles.finballBox}>
-            <Pinball value={value} />
+            <GroupFinball value={value} />
           </div>
         </div>
       ) : (

@@ -13,8 +13,8 @@ public class ReadFinBallHistoryDto {
     public static class Response {
 
         private FinBallAccountInfoDto account;
-        private ArrayList<FinBallTradeHistoryDto> tradeHistoryList;
-        private ArrayList<String> categoryList = new ArrayList<>();
+        private ArrayList<ReadFinBallTradeHistoryDto> tradeHistoryList;
+        private ArrayList<CategoryDto> categoryList;
 
         public void toFinBallTradeHistoryDtoList(
                 List<FinBallHistory> FinBallAccountHistoryList) {
@@ -30,7 +30,10 @@ public class ReadFinBallHistoryDto {
             categoryList = new ArrayList<>();
 
             for (Category category : categoryDtoList) {
-                categoryList.add(category.getName());
+                categoryList.add(CategoryDto.builder()
+                        .id(category.getId())
+                        .name(category.getName())
+                        .build());
             }
         }
     }

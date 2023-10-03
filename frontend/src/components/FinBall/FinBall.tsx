@@ -1,4 +1,6 @@
 import Pinball from "../../pages/Pinball/Pinball";
+import PinballJeongHui from "../../pages/Pinball/PinballJeongHui";
+
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -62,11 +64,11 @@ function FinBall() {
           </button>
         </div>
       ) : (
-        <div id="home-canvas" style={{ width: "300px", height: "150px" }}>
+        <div id="home-canvas" style={{ width: "300px", height: "200px" }}>
           {auth.accessToken == "" ? (
             "login이 필요합니다"
           ) : (
-            <Pinball
+            <PinballJeongHui
               value={{ parent: "home-canvas", width: "300px", height: "150px" }}
             />
           )}
