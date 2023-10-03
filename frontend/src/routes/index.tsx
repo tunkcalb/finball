@@ -15,10 +15,11 @@ import SecurityKeypad from "../pages/Auth/SecurityKeypad";
 import SecuritySetting from "../pages/Auth/SecuritySetting.tsx";
 import CertificationNaver from "../pages/Auth/CertificationNaver";
 
+import Jeonghui from "../pages/Test/JeongHui";
 import Pinball from "../pages/Pinball/Pinball";
 import Game from "../pages/Pinball/Game";
 import Game2 from "../pages/Pinball/Game2";
-import Card from "../pages/Pinball/Card";
+import Card from "../pages/Card/Card";
 import AccountBook from "../pages/Pinball/AccountBook";
 
 import BankInfo from "../pages/Bank/BankInfo";
@@ -48,11 +49,18 @@ import GroupAccount from "../pages/GroupAccount/GroupAccount";
 import CreateGroupAccount from "../pages/GroupAccount/CreateGroupAccount";
 // 컴포넌트 테스트용
 import InviteMember from "../components/GroupAccount/InviteMember";
+import AcceptInvite from "../pages/GroupAccount/AcceptInvite";
 import GroupAccountHistory from "../pages/GroupAccount/GroupAccountHistory";
 
 import MyDataAuth from "../pages/Auth/MyDataAuth";
 import CreateFinBallAccount from "../pages/Pinball/CreateFinBallAccount";
 import CreateFinBallAccountAuth from "../pages/Auth/CreateFinBallAccountAuth";
+
+// 모임통장 계좌이체
+import TransferGroupAccount from "../components/GroupAccount/TransferGroupACcount.tsx";
+import TransferValueGroupAccount from "../components/GroupAccount/TransferValueGroupAccount.tsx";
+import TransferingGroupAccount from "../components/GroupAccount/TransferingGroupAccount.tsx";
+import GroupAccountContainer from "../pages/GroupAccount/GroupAccountContainer.tsx";
 
 function Router() {
   return (
@@ -78,7 +86,7 @@ function Router() {
         />
 
         <Route path="/pinball" element={<Pinball />} />
-        {/* <Route path="/card" element={<Card />} /> */}
+        <Route path="/cardView" element={<Card />} />
         <Route path="/game" element={<Game />} />
         <Route path="/game2" element={<Game2 />} />
         <Route path="/signupconfrim" element={<SignUpConfrim />} />
@@ -91,6 +99,7 @@ function Router() {
 
         <Route path="/counter" element={<Counter />} />
         <Route path="/pinball" element={<Pinball />} />
+        <Route path="/jeonghui" element={<Jeonghui />} />
         <Route path="/game" element={<Game />} />
 
         <Route element={<PrivateRoute />}>
@@ -114,7 +123,7 @@ function Router() {
           <Route path="/transferValue" element={<TransferValue />} />
           <Route path="/fillAccount" element={<FillAccount />} />
           {/* 모임통장 -> 동적 라우팅 적용 */}
-          <Route path="/groupaccount/:no" element={<GroupAccount />} />
+          <Route path="/groupaccount/:no" element={<GroupAccountContainer />} />
           {/* 모임통장 생성 페이지 */}
           <Route
             path="/create/group-account"
@@ -122,12 +131,28 @@ function Router() {
           />
           {/* 모달 테스트 (사용자 초대 모달) */}
           <Route path="/invite/group-account" element={<InviteMember />} />
+          {/* 모임 통장 계좌이체 */}
+          <Route
+            path="/transferGroupAccount"
+            element={<TransferGroupAccount />}
+          />
+          <Route
+            path="/transferValueGroupAccount"
+            element={<TransferValueGroupAccount />}
+          />
           {/* 모임 통장 거래 내역 페이지 */}
           <Route
             path="/group-account/history/:no"
             element={<GroupAccountHistory />}
           />
         </Route>
+        <Route
+          path="/transferingGroupAccount"
+          element={<TransferingGroupAccount />}
+        />
+
+        {/* 모임통장 초대 수락 */}
+        <Route path="/accept/group-account/:uuid" element={<AcceptInvite />} />
       </Routes>
     </>
   );

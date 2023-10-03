@@ -1,7 +1,7 @@
 .body { margin: 0; overflow: auto; }
 .canvas{
 	width: 100%;
-	height: auto;
+	height: 100%;
 }
 .button {
 	background-color: aqua;
@@ -25,4 +25,12 @@
 	font-weight: bold;
 	font-size: 15px;
 	width: fit-content;
+  }
+  .minbal{
+	position: absolute;
+	font-weight: bold;
+	font-size: 15px;
+	width: fit-content;
+	justify-self: flex-start;
+	transform: translateY(790%);
   }

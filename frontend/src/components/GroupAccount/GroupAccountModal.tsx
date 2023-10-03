@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styles from "./GroupAccountModal.module.css";
 
 const GroupAccountModal = (props) => {
-
   const data = props.data;
 
   return (
@@ -27,16 +27,23 @@ const GroupAccountModal = (props) => {
                 </span>
                 <div className={styles.userInfo}>
                   <div className={styles.username}>{member.name}</div>
-                  {data.gameEnd != true && (<div className={styles.userBalance}>{member.balance}</div>)}
-                  {/* 핀볼 거래내역에서 모달을 불렀다면.. value를 보여줌 */}
-                  {data.gameEnd == true && (<div className={styles.userBalance}>- {member.value}</div>)}
+                  {data.gameEnd != true && (
+                    <div className={styles.userBalance}>{member.balance}</div>
+                  )}
+                  {/* 모임 거래내역에서 모달을 불렀다면.. value를 보여줌 */}
+                  {data.gameEnd == true && (
+                    <div className={styles.userBalance}> - {member.value}</div>
+                  )}
                 </div>
               </div>
             </div>
           ))}
           <div>
-            {/* 핀볼 거래내역에서 모달을 불렀다면.. 이체 버튼을 안보이게 */}
-            {data.gameEnd != true && (<button>이체하기</button>)}
+            {data.gameEnd != true && (
+              <Link to="/transferGroupAccount">
+                <button>이체하기</button>
+              </Link>
+            )}
             <button onClick={props.onClose}>닫기</button>
           </div>
         </div>
