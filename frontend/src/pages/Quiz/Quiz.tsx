@@ -1,24 +1,49 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "./Quiz.module.css";
+import styles from "./Quiz.module.scss";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Box from "@mui/material/Box";
-import LinearProgress from "@mui/material/LinearProgress";
-import { setQuiz, setIndex } from "../../store/slices/quizSlice";
-import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+// import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
+import {
+  setQuiz,
+  setIndex,
+  setResultPoint,
+  setResultScore,
+} from "../../store/slices/quizSlice";
+// import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+// import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import { RootState } from "../../store/store";
+import yellowball from "../../assets/yellowball.png";
+import clock from "../../assets/clock.png";
 
 const BASE_HTTP_URL = "https://j9E106.p.ssafy.io";
 
 function Quiz() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = useSelector((state) => state.auth);
-  const quiz = useSelector((state) => state.quiz);
-  const [progress, setProgress] = useState(0);
+  const auth = useSelector((state: RootState) => state.auth);
+  const quiz = useSelector((state: RootState) => state.quiz);
+  const [progress, setProgress] = useState(100);
   const [isGoodVisible, setIsGoodVisible] = useState(false);
   const [isBadVisible, setIsBadVisible] = useState(false);
+  const [totalPoint, setTotalPoint] = useState(0);
+  const [score, setScore] = useState(0);
+
+  const RedLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 20,
+    borderRadius: 15,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: "#ededed",
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 15,
+      backgroundColor: "#eb4034",
+    },
+  }));
 
   // useEffect(() => {
   //   console.log(quiz);
@@ -27,7 +52,7 @@ function Quiz() {
   // }, []);
 
   useEffect(() => {
-    setProgress(0);
+    setProgress(100);
     // 날짜가 다른 경우 quiz 불러옴
     if (quiz.date !== new Date().toDateString()) {
       getNewQuiz();
@@ -37,13 +62,13 @@ function Quiz() {
       if (quiz.index !== 5) {
         const timer = setInterval(() => {
           setProgress((oldProgress) => {
-            if (oldProgress === 100) {
+            if (oldProgress <= 0) {
               bad();
               dispatch(setIndex(quiz.index + 1));
-              return 0;
+              return 100;
             }
             const diff = 0.1;
-            return Math.min(oldProgress + diff, 100);
+            return Math.min(oldProgress - diff, 100);
           });
         }, 10);
 
@@ -51,8 +76,16 @@ function Quiz() {
           clearInterval(timer);
         };
       }
+      // } else {
+      //   dispatch(setIndex(0));
+      // }
     }
   }, [quiz]);
+
+  useEffect(() => {
+    dispatch(setResultPoint(totalPoint));
+    dispatch(setResultScore(score));
+  }, [totalPoint, score]);
 
   const getNewQuiz = () => {
     axios
@@ -66,8 +99,8 @@ function Quiz() {
         dispatch(
           setQuiz({
             date: new Date().toDateString(),
-            quiz: response.data.data.quizInfoList,
             index: 0,
+            quiz: response.data.data.quizInfoList,
           })
         );
       })
@@ -80,12 +113,16 @@ function Quiz() {
   const checkAnswer = (answer) => {
     if (answer === quiz.quiz[quiz.index].answer) {
       good();
-      getPoint(Math.round(5 * (100 - progress)));
+      getPoint(Math.round(5 * progress));
+      setTotalPoint(
+        (prevTotalPoint) => prevTotalPoint + Math.round(5 * progress)
+      );
+      setScore((prevScore) => prevScore + 1);
     } else {
       bad();
     }
     dispatch(setIndex(quiz.index + 1));
-    setProgress(0);
+    setProgress(100);
   };
 
   const getPoint = (point) => {
@@ -133,31 +170,61 @@ function Quiz() {
 
   return (
     <div className={styles.container}>
-      <h1>OX 퀴즈</h1>
-      {quiz.quiz.length !== 0 && quiz.index < 5 ? (
-        <div>
-          <p className={styles.text}>{quiz.quiz[quiz.index].body}</p>
-          <Box sx={{ width: "100%" }}>
-            <LinearProgress variant="determinate" value={progress} />
-          </Box>
-          <p className={styles.text}>
-            {Math.round(5 * (100 - progress))} Point
-          </p>
+      <div className={styles.paper}>
+        <div className={styles.title}>
+          <h2>OX퀴즈</h2>
         </div>
-      ) : (
-        <p className={styles.text}>오늘의 퀴즈를 모두 풀었습니다.</p>
-      )}
+        <div className={styles.body}>
+          {quiz.quiz.length !== 0 && quiz.index < 5 ? (
+            <div>
+              <div className={styles.quiz}>
+                <p className={styles.quiztext}>{quiz.quiz[quiz.index].body}</p>
+              </div>
+              <div className={styles.progress}>
+                <img src={clock} alt="" />
+                <RedLinearProgress variant="determinate" value={progress} />
+              </div>
+              <div className={styles.point}>
+                <div className={styles.pointimg}>
+                  <img src={yellowball} alt="" />
+                </div>
+                <div className={styles.pointtext}>
+                  {Math.round(5 * progress)}
+                </div>
+                <div className={styles.pointpoint}>Point</div>
+              </div>
+              <div>맞춘 갯수 : {score} / 5</div>
+            </div>
+          ) : (
+            <>
+              <p className={styles.text}>결과</p>
+              <div>맞춘 갯수 : {score} / 5</div>
+              <div>획득한 포인트 : {totalPoint}</div>
+              <button onClick={() => navigate("/")}>메인으로 돌아가기</button>
+            </>
+          )}
+          {isGoodVisible && (
+            <div>
+              <p>정답입니다!</p>
+              <p>현재까지 획득한 포인트: {totalPoint}</p>
+            </div>
+          )}
+          {isBadVisible && (
+            <div>
+              <p>오답입니다.</p>
+              <p>현재까지 획득한 포인트: {totalPoint}</p>
+            </div>
+          )}
+        </div>
+      </div>
       <div className={styles.answerButton}>
         <button className={styles.yes} onClick={() => checkAnswer(true)}>
-          O
+          <span>O</span>
         </button>
         <button className={styles.no} onClick={() => checkAnswer(false)}>
-          X
+          <span>X</span>
         </button>
       </div>
-
-      {isGoodVisible && <SentimentSatisfiedAltIcon sx={{ fontSize: 50 }} />}
-      {isBadVisible && <SentimentVeryDissatisfiedIcon sx={{ fontSize: 50 }} />}
     </div>
   );
 }

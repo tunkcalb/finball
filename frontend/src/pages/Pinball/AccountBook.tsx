@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import AccountFinball from "../Pinball/AccountFinball";
+import PinballJeongHui from "../Pinball/PinballJeongHui";
 import {
   CircularProgressbar,
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import SafeMoney from "./safeMoney"
+import SafeMoney from "./SafeMoney";
 import cash from "../../assets/cash.png";
 import styles from "./AccountBook.module.css";
 import axios from "axios";
@@ -20,7 +21,7 @@ import { setAccount } from "../../store/slices/accountSlice";
 import { RootState } from "../../store/store";
 
 const BASE_HTTP_URL = "https://j9E106.p.ssafy.io";
-//const BASE_HTTP_URL = "http://localhost:8080";
+// const BASE_HTTP_URL = "http://localhost:8080";
 
 function AccountBook() {
   const [state, setState] = useState<any>({});
@@ -123,7 +124,7 @@ function AccountBook() {
 
   useEffect(() => {
     findAccountBook();
-  }, [accountbook])
+  }, [accountbook]);
   const getHistory = () => {
     axios({
       method: "get",
@@ -175,7 +176,9 @@ function AccountBook() {
     })
       .then((res) => {
         setState(res.data.data);
-        window.location.reload();
+        //이게 false여야 가계부 생성 => 삭제 버튼 만들어짐
+        setisAccountBook(false);
+        getHistory();
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -216,7 +219,10 @@ function AccountBook() {
       },
     })
       .then((res) => {
+        // alert("1")
         setState(res.data.data);
+        // alert("2")
+        getHistory();
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -258,8 +264,10 @@ function AccountBook() {
       },
     })
       .then((res) => {
+        // alert("3")
         console.log(res.data.data);
         setState(res.data.data);
+        getHistory();
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -290,7 +298,8 @@ function AccountBook() {
       .then((res) => {
         console.log(res);
         setisAccountBook(false);
-        window.location.reload();
+        //window.location.reload();
+        getHistory();
       })
       .catch((err) => {
         console.log("삐빅", err);
@@ -534,7 +543,6 @@ function AccountBook() {
             {/* <button onClick={openModal}>category-</button> */}
           </div>
         )}
-
       </div>
       <Carousel
         selectedItem={
@@ -548,7 +556,6 @@ function AccountBook() {
         showStatus={false}
         onChange={handleCarouselChange}
       >
-
         <div key="btn1">
           {selectedBtn === "btn1" && (
             <div>
@@ -566,7 +573,7 @@ function AccountBook() {
               >
                 <AccountFinball value={{ parent: "canvas1" }} />
                 <div style={{ position: "absolute", top: "0", right: "0" }}>
-                  <SafeMoney balance={finBallAccount.account.balance}/>
+                  <SafeMoney balance={finBallAccount.account.balance} />
                 </div>
               </div>
             </div>
