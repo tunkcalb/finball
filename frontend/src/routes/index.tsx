@@ -20,6 +20,7 @@ import Pinball from "../pages/Pinball/Pinball";
 import Game from "../pages/Pinball/Game";
 import Game2 from "../pages/Pinball/Game2";
 import Card from "../pages/Card/Card";
+import QrScanner from "../pages/Card/QrScanner";
 import AccountBook from "../pages/Pinball/AccountBook";
 
 import BankInfo from "../pages/Bank/BankInfo";
@@ -33,6 +34,7 @@ import NavPage from "../pages/NavPage/NavPage";
 
 import Chatbot from "../pages/ChatBot/ChatBot";
 import Quiz from "../pages/Quiz/Quiz";
+import QuizMain from "../pages/Quiz/QuizMain";
 import Shop from "../pages/Shop/Shop";
 import InventoryAll from "../pages/Shop/InventoryAll";
 import Inventory from "../pages/Shop/Inventory";
@@ -49,6 +51,7 @@ import GroupAccount from "../pages/GroupAccount/GroupAccount";
 import CreateGroupAccount from "../pages/GroupAccount/CreateGroupAccount";
 // 컴포넌트 테스트용
 import InviteMember from "../components/GroupAccount/InviteMember";
+import AcceptInvite from "../pages/GroupAccount/AcceptInvite";
 import GroupAccountHistory from "../pages/GroupAccount/GroupAccountHistory";
 
 import MyDataAuth from "../pages/Auth/MyDataAuth";
@@ -59,6 +62,7 @@ import CreateFinBallAccountAuth from "../pages/Auth/CreateFinBallAccountAuth";
 import TransferGroupAccount from "../components/GroupAccount/TransferGroupACcount.tsx";
 import TransferValueGroupAccount from "../components/GroupAccount/TransferValueGroupAccount.tsx";
 import TransferingGroupAccount from "../components/GroupAccount/TransferingGroupAccount.tsx";
+import GroupAccountContainer from "../pages/GroupAccount/GroupAccountContainer.tsx";
 
 function Router() {
   return (
@@ -103,6 +107,7 @@ function Router() {
         <Route element={<PrivateRoute />}>
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quizMain" element={<QuizMain />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/inventoryAll" element={<InventoryAll />} />
           <Route path="/inventory" element={<Inventory />} />
@@ -113,6 +118,7 @@ function Router() {
           <Route path="/bank/account" element={<BankConnect />} />
           <Route path="/company/card" element={<CardInfo />} />
           <Route path="/card" element={<CardConnect />} />
+          <Route path="/qrScanner" element={<QrScanner />} />
           <Route path="/agreement" element={<Agreement />} />
           {/* 계좌 이체 */}
           <Route path="/accountList" element={<AccountList />} />
@@ -121,7 +127,7 @@ function Router() {
           <Route path="/transferValue" element={<TransferValue />} />
           <Route path="/fillAccount" element={<FillAccount />} />
           {/* 모임통장 -> 동적 라우팅 적용 */}
-          <Route path="/groupaccount/:no" element={<GroupAccount />} />
+          <Route path="/groupaccount/:no" element={<GroupAccountContainer />} />
           {/* 모임통장 생성 페이지 */}
           <Route
             path="/create/group-account"
@@ -143,6 +149,10 @@ function Router() {
             path="/group-account/history/:no"
             element={<GroupAccountHistory />}
           />
+
+          {/* 모임통장 초대 수락 */}
+          <Route path="/accept/group-account/:uuid" element={<AcceptInvite />} />
+
         </Route>
         <Route
           path="/transferingGroupAccount"
