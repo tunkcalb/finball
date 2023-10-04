@@ -19,13 +19,8 @@
   justify-items: center;
   align-items: center;
   text-align: center;
-  background-color: #edf3ff;
+  background-color: #f6f9ff;
   height: 520px;
-}
-.container h1,
-.container h2,
-.container p {
-  margin: 0;
 }
 
 .paper {
@@ -42,10 +37,26 @@
   height: 90px;
 }
 
+.graybox {
+  margin-top: 10px;
+  background-color: #f4f6f9;
+  padding: 5px;
+}
+.graybox p {
+  margin: 0;
+  padding: 10px;
+  font-weight: 500;
+}
+.graybox img {
+  width: 30px;
+  position: absolute;
+  top: 180px;
+}
 .body {
   display: flex;
   flex-direction: column;
   justify-content: start;
+  text-align: center;
   padding: 30px;
   padding-top: 10px;
   height: 275px;
@@ -114,43 +125,7 @@
   justify-content: space-between;
 }
 
-.yes {
-  background-color: #abc5ff;
-  color: #ffffff;
-  font-size: 40px;
-  width: 120px;
-  margin-top: 20px;
-  padding: 0;
-  height: 60px;
-  font-weight: 600;
-}
-
-.no {
-  background-color: #ffabab;
-  color: #ffffff;
-  font-size: 40px;
-  width: 120px;
-  margin-top: 20px;
-  padding: 0;
-  height: 60px;
-  font-weight: 600;
-}
-
-.endbox {
-  margin-bottom: 30px;
-}
-.endbox p {
-  font-size: 16px;
-  font-weight: 400;
-}
-.endbox span {
-  font-size: 20px;
-  font-weight: bold;
-}
-
 .btnbox {
-  margin-top: 20px;
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -158,4 +133,40 @@
   border-radius: 20px;
   background-color: #3c78ff;
   color: white;
+}
+
+.startbox p {
+  font-size: 16px;
+  font-weight: 500;
+}
+.startbox span {
+  font-size: 20px;
+  font-weight: bold;
+}
+.startbox button {
+  margin-top: 60px;
+  box-shadow: 0px 2px 20px rgba(128, 116, 255, 0.73);
+}
+.startbox .semibold {
+  font-weight: 600;
+  margin: 0;
+  margin-top: 20px;
+}
+.startbox .semibold p {
+  margin: 0;
+  padding: 0;
+}
+
+.pointbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pointbox h3 {
+  margin: 0;
+}
+.pointbox img {
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
 }
