@@ -336,15 +336,6 @@ function AccountBook() {
         console.log("삐빅", err);
       });
   };
-  const renderPinball = () => {
-    if (selectedBtn === "btn1") {
-      return <Pinball value={{ parent: "canvas1" }} />;
-    } else if (selectedBtn === "btn2") {
-      return <Pinball value={{ parent: "canvas2" }} />;
-    } else {
-      return <Pinball value={{ parent: "canvas3" }} />;
-    }
-  };
   return (
     <div>
       {/* 가계부생성모달 => 이거 안쓰이고 있는 것 같아요*/}
@@ -575,7 +566,7 @@ function AccountBook() {
               <div style={{ fontSize: "50px", fontWeight: "bold" }}>
                 우리 계좌
               </div>
-              <div>잔액 : {finBallAccount.account.balance}</div>
+              <div>잔액 : {finBallAccount.account.balance.toLocaleString()}</div>
               <div
                 id="canvas1"
                 style={{
