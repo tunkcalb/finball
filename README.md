@@ -3,7 +3,7 @@
 <br/>
 
 <div align="center">
-  <img src="./img/logo.png" width="80%">
+  <img src="./img/logo.PNG" width="80%">
   <h3>자산의 시각화를 제공하는 인터넷 전문 은행</h3>
 </div>
 
