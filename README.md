@@ -173,15 +173,15 @@
 
 <table>
     <tr>
-        <td align="center">
+        <td align="center" width="200">
             <h5>핀볼 계좌 채우기</h5>
             <img src="./img/gifs/핀볼채우기.gif" alt="핀볼채우기" width="100%" />  
         </td>
-        <td align="center">
+        <td align="center" width="200">
             <h5>핀볼 계좌 이체</h5>
             <img src="./img/gifs/핀볼보내기.gif" alt="핀볼보내기" width="100%" />  
         </td> 
-        <td align="center">
+        <td align="center" width="200">
             <h5>가계부</h5>
             <img src="./img/gifs/가계부.gif" alt="가계부" width="100%" />
         </td>
@@ -204,19 +204,19 @@
 
 <table>
     <tr>
-        <td align="center">
+        <td align="center" width="200">
             <h5>모임 계좌 생성</h5>
             <img src="./img/gifs/모임계좌생성.gif" alt="모임계좌생성" width="200" />  
         </td>
-        <td align="center">
+        <td align="center" width="200">
             <h5>모임 계좌 채우기</h5>
             <img src="./img/gifs/모임계좌채우기.gif" alt="모임계좌채우기" width="200" />  
         </td> 
-        <td align="center">
+        <td align="center" width="200">
             <h5>모임 계좌로 결제</h5>
             <img src="./img/gifs/모임계좌로결제.gif" alt="모임계좌로결제" width="200" />
         </td>
-        <td align="center">
+        <td align="center" width="200">
             <h5>간편 정산</h5>
             <img src="./img/gifs/간편정산.gif" alt="간편정산" width="200" />
         </td>
@@ -241,19 +241,19 @@
 
 <table>
     <tr>
-        <td align="center">
+        <td align="center" width="200">
             <h5>카드 연결</h5>
             <img src="./img/gifs/카드연결.gif" alt="카드연결" width="200" />  
         </td>
-        <td align="center">
+        <td align="center" width="200">
             <h5>카드 결제</h5>
             <img src="./img/gifs/카드결제.gif" alt="카드결제" width="200" />  
         </td> 
-        <td align="center">
+        <td align="center" width="200">
             <h5>계좌 연결</h5>
             <img src="./img/gifs/계좌연결.gif" alt="계좌연결" width="200" />
         </td>
-        <td align="center">
+        <td align="center" width="200">
             <h5>계좌 결제</h5>
             <img src="./img/gifs/계좌결제.gif" alt="계좌결제" width="200" />
         </td>
@@ -280,15 +280,15 @@
 
 <table>
     <tr>
-        <td align="center">
+        <td align="center" width="200">
             <h5>GPT 학습</h5>
             <img src="./img/gifs/GPT학습.gif" alt="GPT학습" width="200" />  
         </td>
-        <td align="center">
+        <td align="center" width="200">
             <h5>금융 퀴즈</h5>
             <img src="./img/gifs/금융퀴즈.gif" alt="금융퀴즈" width="200" />  
         </td> 
-        <td align="center">
+        <td align="center" width="200">
             <h5>계좌 연결</h5>
             <img src="./img/gifs/커스텀볼.gif" alt="커스텀볼" width="200" />
         </td>
