@@ -264,6 +264,7 @@
         <div>✔ 대외계 서버에 존재하는 카드 정보 조회 및 등록</div>  
       </td>
       <td align="center">
+        <div>✔ 카드상세 페이지에서 카드 결제</div>
       </td>
       <td align="center">
         <div>✔ 대외계 접근을 위해 주민번호 인증</div>
